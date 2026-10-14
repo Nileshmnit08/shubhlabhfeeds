@@ -1,0 +1,63 @@
+# ==============================================================================
+# Shubh Labh CMS - Apache Server Configuration & Security Hardening
+# ==============================================================================
+
+# Disable directory indexing
+Options -Indexes
+
+# ------------------------------------------------------------------------------
+# 1. Protect Sensitive Directories & Source Files from Direct Web Access
+# ------------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block access to protected directories
+    RewriteRule ^(app|config|private|storage|cli|tests|migrations)/ - [F,L]
+
+    # Block access to environment, log, markdown, and SQL files
+    RewriteRule \.(env.*|sql|md|log|json|lock|git.*)$ - [F,L]
+
+    # Route clean /admin URLs to the public admin portal
+    RewriteRule ^admin/?$ public/admin/login.php [L,QSA]
+    RewriteRule ^admin/login/?$ public/admin/login.php [L,QSA]
+    RewriteRule ^admin/logout/?$ public/admin/logout.php [L,QSA]
+    RewriteRule ^admin/index/?$ public/admin/index.php [L,QSA]
+    RewriteRule ^admin/sections/?$ public/admin/sections.php [L,QSA]
+    RewriteRule ^admin/products/?$ public/admin/products.php [L,QSA]
+    RewriteRule ^admin/articles/?$ public/admin/articles.php [L,QSA]
+    RewriteRule ^admin/navigation/?$ public/admin/navigation.php [L,QSA]
+    RewriteRule ^admin/settings/?$ public/admin/settings.php [L,QSA]
+    RewriteRule ^admin/media/?$ public/admin/media.php [L,QSA]
+    RewriteRule ^admin/audit/?$ public/admin/audit.php [L,QSA]
+
+    # Route clean /api/public URLs to API controllers
+    RewriteRule ^api/public/bootstrap/?$ public/api/public/bootstrap.php [L,QSA]
+    RewriteRule ^api/public/products/?$ public/api/public/products.php [L,QSA]
+    RewriteRule ^api/public/knowledge/?$ public/api/public/knowledge.php [L,QSA]
+    RewriteRule ^api/public/contact/?$ public/api/public/contact.php [L,QSA]
+</IfModule>
+
+# Fallback FilesMatch block for servers without mod_rewrite
+<FilesMatch "(\.(env.*|sql|md|log|json)|composer\.json|config\.local\.php)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ------------------------------------------------------------------------------
+# 2. HTTP Security Headers
+# ------------------------------------------------------------------------------
+<IfModule mod_headers.c>
+    # Prevent clickjacking / framing
+    Header set X-Frame-Options "SAMEORIGIN"
+
+    # Prevent MIME-type sniffing
+    Header set X-Content-Type-Options "nosniff"
+
+    # Referrer policy
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
