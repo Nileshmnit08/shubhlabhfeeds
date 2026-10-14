@@ -35,3 +35,7 @@ storage/logs/*.log
 storage/cache/*
 !storage/cache/.gitkeep
 
+# Build Output & Dependencies
+/dist
+/node_modules
+.vercel
