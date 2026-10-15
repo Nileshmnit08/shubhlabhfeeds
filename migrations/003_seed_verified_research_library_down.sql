@@ -1,10 +1,11 @@
 -- =============================================================================
 -- Migration 003 Down: Rollback Ten-Year Cattle Feed Scientific Research Library
+-- Target Database: Supabase / PostgreSQL (public.website_knowledge_articles)
 -- =============================================================================
 
 START TRANSACTION;
 
-DELETE FROM knowledge_articles WHERE slug IN (
+DELETE FROM public.website_knowledge_articles WHERE slug IN (
     'evaluating-agro-industrial-by-products-dairy-rations',
     'ddgs-protein-source-dairy-cow-diets',
     'rumen-protected-methionine-transition-dairy-cows',

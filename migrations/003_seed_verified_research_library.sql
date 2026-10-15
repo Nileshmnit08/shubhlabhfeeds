@@ -1,16 +1,23 @@
 -- =============================================================================
--- Migration 003: Seed Ten-Year Cattle Feed Scientific Research Library
--- Project: Shubh Labh Website CMS (Target Table: knowledge_articles)
+-- Migration: Seed Ten-Year Cattle Feed Scientific Research Library
+-- Target Database: Supabase / PostgreSQL (public.website_knowledge_articles)
 -- Sprint: SL-KNOWLEDGE-RESEARCH-01
 -- Period: 15 October 2016 – 15 October 2026
--- Schema: migrations/001_create_initial_schema.sql
 -- Status: Defaulted to 'draft' as per Section 10 publication policy
+-- Note: Includes public.knowledge_articles view compatibility shim & ON CONFLICT idempotency
 -- =============================================================================
 
 START TRANSACTION;
 
+-- -----------------------------------------------------------------------------
+-- Supabase Compatibility View:
+-- Creates/replaces public.knowledge_articles view pointing to public.website_knowledge_articles
+-- -----------------------------------------------------------------------------
+CREATE OR REPLACE VIEW public.knowledge_articles AS
+SELECT * FROM public.website_knowledge_articles;
+
 -- Article 1 (2016): Agro-Industrial By-Product Inclusion in Dairy Rations
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Evaluating Agro-Industrial By-Product Feeds in Lactating Dairy Rations',
@@ -39,10 +46,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2016-12-01 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 2 (2017): Substitution of SBM with Dried Distillers Grains with Solubles (DDGS)
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Dried Distillers Grains with Solubles as a Protein Source in Dairy Cow Diets',
@@ -71,10 +87,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2017-11-15 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 3 (2017): Ethyl-Cellulose Rumen-Protected Methionine in Transition Cows
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Rumen-Protected Methionine Supplementation in Transition and Fresh Dairy Cows',
@@ -103,10 +128,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2017-09-01 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 4 (2018): Supplemental Yeast Culture and Dietary Starch Interactions
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Yeast Culture Supplementation and Starch Fermentation in Dairy Cattle',
@@ -135,10 +169,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2018-01-10 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 5 (2018): Cottonseed Cake Supplementation in Growing Buffalo Calves
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Cottonseed Cake Supplementation and Metabolic Response in Growing Buffalo Calves',
@@ -167,10 +210,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2018-05-20 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 6 (2019): Palmitic Acid Bypass Fat in Early Lactation Dairy Cows
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Timing of Palmitic Acid Bypass Fat Supplementation in Early Lactation',
@@ -199,10 +251,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2019-01-15 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 7 (2019): Canola-Quality Rapeseed-Mustard Cake in Crossbred Cows
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Canola-Quality Rapeseed-Mustard Cake as a Soybean Meal Alternative in Crossbred Cows',
@@ -231,10 +292,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2019-03-20 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 8 (2020): Clay and Yeast-Based Aflatoxin B1 Binders in Dairy Cattle
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Yeast Culture and Clay-Based Binders for Aflatoxin B1 Mitigation in Dairy Cattle',
@@ -263,10 +333,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2020-01-10 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 9 (2021): Calcium Salts of Palm Fatty Acids (Ca-PFA) Meta-Analysis
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Calcium Salts of Fatty Acids: Digestibility and Production Meta-Analysis in Dairy Cows',
@@ -295,10 +374,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2021-09-15 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 10 (2021): Chelated Mineral Mixture Supplementation in Lactating Buffaloes
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Chelated Mineral Supplementation and Lactation Performance in Murrah Buffaloes',
@@ -327,10 +415,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2021-12-20 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 11 (2022): Rice Bran Crude Lecithin (RBCL) in Ruminant Diets
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Rice Bran Crude Lecithin as an Energy Supplement and Rumen Modifier in Calves',
@@ -359,10 +456,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2022-05-15 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 12 (2022): Exogenous Fibrolytic and Amylolytic Enzyme Supplementation
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Exogenous Fibrolytic and Amylolytic Enzymes in Low- and Normal-Starch Dairy Diets',
@@ -391,10 +497,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2022-03-10 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 13 (2023): Heat-Treated SBM vs. High-Protein DDGS on RUP and Digestibility
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Rumen-Undegradable Protein Optimization: Heat-Treated SBM vs. High-Protein DDGS',
@@ -423,10 +538,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2023-01-15 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 14 (2024): Rumen-Protected Methionine Under Thermal Heat Stress
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Rumen-Protected Methionine Supplementation Under Heat Stress in Transition Cows',
@@ -455,10 +579,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2024-10-01 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 15 (2024): Isoacid Supplementation in Low- and High-Forage Dairy Diets
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Isoacids as Feed Additives for Cellulolytic Bacteria and Milk Fat Synthesis',
@@ -487,10 +620,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2024-11-15 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 16 (2025): Medium-Chain Fatty Acids (MCFA) in Transition Dairy Cows
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Medium-Chain Fatty Acid Supplementation Across the Dairy Transition Period',
@@ -519,10 +661,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2025-01-20 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 17 (2025): Bioactive Feed Additives for Enteric Methane Mitigation
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Scientific Criteria for Selecting Antimethanogenic Bioactive Feed Additives in Cattle',
@@ -551,10 +702,19 @@ INSERT INTO knowledge_articles (
     'draft',
     '2025-02-15 10:00:00',
     NOW()
-);
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
 
 -- Article 18 (2026): Meta-Analysis on Extended Lactations and Nutritional Management
-INSERT INTO knowledge_articles (
+INSERT INTO public.website_knowledge_articles (
     title, slug, category, summary, content_body, display_order, status, published_at, created_at
 ) VALUES (
     'Nutritional Dynamics and Production Responses in Extended Dairy Cow Lactations',
@@ -583,6 +743,21 @@ INSERT INTO knowledge_articles (
     'draft',
     '2026-03-01 10:00:00',
     NOW()
+)
+ON CONFLICT (slug) DO UPDATE SET
+    title = EXCLUDED.title,
+    category = EXCLUDED.category,
+    summary = EXCLUDED.summary,
+    content_body = EXCLUDED.content_body,
+    display_order = EXCLUDED.display_order,
+    status = EXCLUDED.status,
+    published_at = EXCLUDED.published_at,
+    updated_at = NOW();
+
+-- Synchronize serial ID sequence for website_knowledge_articles
+SELECT setval(
+    pg_get_serial_sequence('public.website_knowledge_articles', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.website_knowledge_articles), 1)
 );
 
 COMMIT;
