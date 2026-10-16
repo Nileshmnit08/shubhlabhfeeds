@@ -175,7 +175,7 @@ renderAdminHeader('Site Settings', 'settings');
                         <span style="font-size: 0.75rem; color: #b45309; font-weight: normal;">(Unconfigured)</span>
                     <?php endif; ?>
                 </label>
-                <input type="text" id="phone_number" name="phone_number" class="form-input" value="<?= htmlspecialchars($settings['phone_number'] ?? '', ENT_QUOTES, 'UTF-8') ?>" placeholder="e.g. +91 98765 43210">
+                <input type="text" id="phone_number" name="phone_number" class="form-input" value="<?= htmlspecialchars($settings['phone_number'] ?? '', ENT_QUOTES, 'UTF-8') ?>" placeholder="e.g. +91 94619 24461">
             </div>
 
             <div class="form-group">
@@ -185,7 +185,7 @@ renderAdminHeader('Site Settings', 'settings');
                         <span style="font-size: 0.75rem; color: #b45309; font-weight: normal;">(Unconfigured)</span>
                     <?php endif; ?>
                 </label>
-                <input type="text" id="whatsapp_number" name="whatsapp_number" class="form-input" value="<?= htmlspecialchars($settings['whatsapp_number'] ?? '', ENT_QUOTES, 'UTF-8') ?>" placeholder="e.g. +919876543210">
+                <input type="text" id="whatsapp_number" name="whatsapp_number" class="form-input" value="<?= htmlspecialchars($settings['whatsapp_number'] ?? '', ENT_QUOTES, 'UTF-8') ?>" placeholder="e.g. +91 94619 24461">
             </div>
         </div>
 
