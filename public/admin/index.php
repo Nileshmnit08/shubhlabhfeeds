@@ -154,6 +154,12 @@ renderAdminHeader('Admin Dashboard', 'dashboard');
                 </a>
             </li>
             <li>
+                <a href="/admin/addresses.php" style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--text-dark); font-weight: 500;">
+                    <span>📍 Manage Contact &amp; Office Addresses</span>
+                    <span style="color: var(--brand-green);">→</span>
+                </a>
+            </li>
+            <li>
                 <a href="/admin/settings.php" style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--text-dark); font-weight: 500;">
                     <span>⚙️ Update Contact & Social Settings</span>
                     <span style="color: var(--brand-green);">→</span>

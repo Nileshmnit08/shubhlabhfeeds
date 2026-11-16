@@ -208,6 +208,9 @@ renderAdminHeader('Site Settings', 'settings');
                     <?php endif; ?>
                 </label>
                 <textarea id="postal_address" name="postal_address" class="form-textarea" style="min-height: 80px;" placeholder="Full postal address in Rajasthan..."><?= htmlspecialchars($settings['postal_address'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
+                <span class="form-help" style="display: block; margin-top: 4px;">
+                    💡 Need multi-location office management, landmarks, or Google Maps directions? Manage them dynamically in <a href="/admin/addresses.php" style="color: var(--brand-green); font-weight: 600;">Contact &amp; Address Management ↗</a>
+                </span>
             </div>
         </div>
     </div>

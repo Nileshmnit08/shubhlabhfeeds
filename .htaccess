@@ -26,6 +26,7 @@ Options -Indexes
     RewriteRule ^admin/products/?$ public/admin/products.php [L,QSA]
     RewriteRule ^admin/articles/?$ public/admin/articles.php [L,QSA]
     RewriteRule ^admin/navigation/?$ public/admin/navigation.php [L,QSA]
+    RewriteRule ^admin/addresses/?$ public/admin/addresses.php [L,QSA]
     RewriteRule ^admin/settings/?$ public/admin/settings.php [L,QSA]
     RewriteRule ^admin/media/?$ public/admin/media.php [L,QSA]
     RewriteRule ^admin/audit/?$ public/admin/audit.php [L,QSA]
@@ -35,6 +36,7 @@ Options -Indexes
     RewriteRule ^api/public/products/?$ public/api/public/products.php [L,QSA]
     RewriteRule ^api/public/knowledge/?$ public/api/public/knowledge.php [L,QSA]
     RewriteRule ^api/public/contact/?$ public/api/public/contact.php [L,QSA]
+    RewriteRule ^api/public/addresses/?$ public/api/public/addresses.php [L,QSA]
 </IfModule>
 
 # Fallback FilesMatch block for servers without mod_rewrite

@@ -409,6 +409,9 @@ function renderAdminHeader(string $title, string $activePage = 'dashboard'): voi
                 <li class="menu-item <?= $activePage === 'navigation' ? 'active' : '' ?>">
                     <a href="/admin/navigation.php">🧭 Navigation Menus</a>
                 </li>
+                <li class="menu-item <?= $activePage === 'addresses' ? 'active' : '' ?>">
+                    <a href="/admin/addresses.php">📍 Contact &amp; Address Management</a>
+                </li>
                 <li class="menu-item <?= $activePage === 'settings' ? 'active' : '' ?>">
                     <a href="/admin/settings.php">⚙️ Site Settings</a>
                 </li>

@@ -9,9 +9,11 @@ require_once dirname(__DIR__, 3) . '/app/Logger.php';
 require_once dirname(__DIR__, 3) . '/app/Database.php';
 require_once dirname(__DIR__, 3) . '/app/ApiResponse.php';
 require_once dirname(__DIR__, 3) . '/app/Models/SiteSetting.php';
+require_once dirname(__DIR__, 3) . '/app/Models/CompanyAddress.php';
 
 use ShubhLabh\App\ApiResponse;
 use ShubhLabh\App\Models\SiteSetting;
+use ShubhLabh\App\Models\CompanyAddress;
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     ApiResponse::error('Method not allowed. Only GET is supported.', 405, 'Method Not Allowed');
@@ -19,11 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 try {
     $settings = SiteSetting::getAllPublic();
+    $addresses = CompanyAddress::getAllActive();
+    $primaryAddress = !empty($addresses) ? $addresses[0] : null;
 
-    $phone = $settings['phone_number'] ?? null;
-    $whatsapp = $settings['whatsapp_number'] ?? null;
-    $email = $settings['public_email'] ?? null;
-    $address = $settings['postal_address'] ?? null;
+    $phone = $settings['phone_number'] ?? ($primaryAddress['office_phone'] ?? null);
+    $whatsapp = $settings['whatsapp_number'] ?? ($primaryAddress['whatsapp_number'] ?? null);
+    $email = $settings['public_email'] ?? ($primaryAddress['email'] ?? null);
+    $address = $settings['postal_address'] ?? ($primaryAddress['formatted_address'] ?? null);
     $crmUrl = $settings['crm_login_url'] ?? 'https://shubhlabh-crm.vercel.app/';
 
     $response = [
@@ -47,6 +51,7 @@ try {
                 'configured' => !empty($address),
             ],
         ],
+        'addresses' => $addresses,
         'portals' => [
             'crm_login' => [
                 'url'         => $crmUrl,
