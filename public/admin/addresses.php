@@ -54,9 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 2. Toggle Active Status
         if ($formAction === 'toggle_status' && $id) {
-            $newActive = !empty($_POST['is_active']) ? 1 : 0;
+            $newActive = !empty($_POST['is_active']);
             $stmt = $pdo->prepare('UPDATE company_addresses SET is_active = :act, updated_at = NOW() WHERE id = :id');
-            $stmt->execute(['act' => $newActive, 'id' => $id]);
+            $stmt->bindValue(':act', $newActive, \PDO::PARAM_BOOL);
+            $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+            $stmt->execute();
 
             AuditLogger::log($newActive ? 'ACTIVATE' : 'DEACTIVATE', 'company_addresses', $id);
             Session::setFlash('success', $newActive ? 'Address activated and visible on public website.' : 'Address deactivated and hidden from public website.');
@@ -67,8 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 3. Set Primary Address
         if ($formAction === 'set_primary' && $id) {
             $pdo->beginTransaction();
-            $pdo->exec('UPDATE company_addresses SET is_primary = 0');
-            $stmt = $pdo->prepare('UPDATE company_addresses SET is_primary = 1, is_active = 1, updated_at = NOW() WHERE id = :id');
+            $pdo->exec('UPDATE company_addresses SET is_primary = false');
+            $stmt = $pdo->prepare('UPDATE company_addresses SET is_primary = true, is_active = true, updated_at = NOW() WHERE id = :id');
             $stmt->execute(['id' => $id]);
             $pdo->commit();
 
@@ -134,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($isPrimary) {
             // If setting this address as primary, reset existing primary
             $pdo->beginTransaction();
-            $pdo->exec('UPDATE company_addresses SET is_primary = 0');
+            $pdo->exec('UPDATE company_addresses SET is_primary = false');
         }
 
         if ($id) {

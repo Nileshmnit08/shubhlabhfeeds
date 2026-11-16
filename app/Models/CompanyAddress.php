@@ -23,7 +23,7 @@ class CompanyAddress
                        email, google_maps_url, display_order, is_active, is_primary,
                        created_at, updated_at
                 FROM company_addresses
-                WHERE is_active = 1
+                WHERE is_active = true
                 ORDER BY is_primary DESC, display_order ASC, id ASC
             ');
             $stmt->execute();
@@ -103,7 +103,7 @@ class CompanyAddress
                        email, google_maps_url, display_order, is_active, is_primary,
                        created_at, updated_at
                 FROM company_addresses
-                WHERE is_active = 1 AND is_primary = 1
+                WHERE is_active = true AND is_primary = true
                 LIMIT 1
             ');
             $stmt->execute();

@@ -1,33 +1,69 @@
 -- =============================================================================
 -- Migration 004: Create Company Addresses Management Table
--- Shubh Labh CMS - Complete Address Management for Public Website
+-- Target Database: Supabase / PostgreSQL
+-- Micro-Sprint: SL-WEBSITE-ADDRESS-CMS-01
 -- =============================================================================
 
-CREATE TABLE IF NOT EXISTS company_addresses (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+-- 1. Table: company_addresses
+CREATE TABLE IF NOT EXISTS public.company_addresses (
+    id BIGSERIAL PRIMARY KEY,
     location_name VARCHAR(150) NOT NULL,
     address_line1 VARCHAR(255) NOT NULL,
-    address_line2 VARCHAR(255) NULL,
-    landmark VARCHAR(150) NULL,
+    address_line2 VARCHAR(255),
+    landmark VARCHAR(150),
     city VARCHAR(100) NOT NULL,
     state VARCHAR(100) NOT NULL,
     pincode VARCHAR(20) NOT NULL,
     country VARCHAR(100) NOT NULL DEFAULT 'India',
-    office_phone VARCHAR(50) NULL,
-    whatsapp_number VARCHAR(50) NULL,
-    email VARCHAR(191) NULL,
-    google_maps_url TEXT NULL,
-    display_order SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-    is_active TINYINT(1) NOT NULL DEFAULT 1,
-    is_primary TINYINT(1) NOT NULL DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX idx_active_order (is_active, display_order),
-    INDEX idx_primary (is_primary)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    office_phone VARCHAR(50),
+    whatsapp_number VARCHAR(50),
+    email VARCHAR(191),
+    google_maps_url TEXT,
+    display_order INTEGER NOT NULL DEFAULT 0,
+    is_active BOOLEAN NOT NULL DEFAULT true,
+    is_primary BOOLEAN NOT NULL DEFAULT false,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 
--- Seed verified initial primary office & works address
-INSERT INTO company_addresses (
+-- 2. Performance Indexes for Public Ordering & Primary Lookup
+CREATE INDEX IF NOT EXISTS idx_company_addresses_active ON public.company_addresses (is_active, display_order);
+CREATE INDEX IF NOT EXISTS idx_company_addresses_primary ON public.company_addresses (is_primary);
+
+-- 3. Website CMS Namespaced Projection View Compatibility
+CREATE OR REPLACE VIEW public.website_company_addresses AS
+SELECT * FROM public.company_addresses;
+
+-- 4. Row Level Security (RLS) Configuration
+ALTER TABLE public.company_addresses ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public can view active addresses" ON public.company_addresses;
+CREATE POLICY "Public can view active addresses"
+    ON public.company_addresses FOR SELECT
+    TO anon, authenticated
+    USING (is_active = true);
+
+DROP POLICY IF EXISTS "Admins can view all addresses" ON public.company_addresses;
+CREATE POLICY "Admins can view all addresses"
+    ON public.company_addresses FOR SELECT
+    TO authenticated
+    USING (public.is_admin());
+
+DROP POLICY IF EXISTS "Admins can manage addresses" ON public.company_addresses;
+CREATE POLICY "Admins can manage addresses"
+    ON public.company_addresses FOR ALL
+    TO authenticated
+    USING (public.is_admin())
+    WITH CHECK (public.is_admin());
+
+-- 5. Grant Permissions
+GRANT SELECT ON public.company_addresses TO anon, authenticated;
+GRANT ALL ON public.company_addresses TO authenticated, service_role;
+GRANT SELECT ON public.website_company_addresses TO anon, authenticated;
+GRANT ALL ON public.website_company_addresses TO authenticated, service_role;
+
+-- 6. Seed Verified Default Primary Office & Works Address
+INSERT INTO public.company_addresses (
     location_name,
     address_line1,
     address_line2,
@@ -57,6 +93,6 @@ INSERT INTO company_addresses (
     'contact@shubhlabhfeeds.in',
     'https://maps.google.com/?q=Shubh+Labh+Cattle+Feed+Rajasthan',
     1,
-    1,
-    1
+    true,
+    true
 );
