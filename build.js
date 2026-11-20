@@ -96,9 +96,9 @@ if (!fs.existsSync(path.join(DIST_DIR, 'order-app', 'index.html'))) {
   process.exit(1);
 }
 
-const apkPath = path.join(DIST_DIR, 'downloads', 'shubhlabh-order-v1.0.1.apk');
+const apkPath = path.join(DIST_DIR, 'downloads', 'shubhlabh-order-v1.0.2.apk');
 if (!fs.existsSync(apkPath)) {
-  console.error('[BUILD ERROR] dist/downloads/shubhlabh-order-v1.0.1.apk is missing!');
+  console.error('[BUILD ERROR] dist/downloads/shubhlabh-order-v1.0.2.apk is missing!');
   process.exit(1);
 }
 
